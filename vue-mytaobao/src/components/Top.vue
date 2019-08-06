@@ -42,14 +42,14 @@
 
         <div class="select">        
                 <span class="select-cont">
-                   <i class="iconfont icon-xinfeng"></i> 消息<i class="el-icon-arrow-down select-down"></i>
+                   <i class="iconfont icon-xinfeng" style="padding-right:3px;"></i>消息<i class="el-icon-arrow-down select-down"></i>
                 </span>
                 <div  class="option-message">
                     查看全部
                 </div>
         </div>
-        <div class="phone">
-             <span class="phone-cont" style="">手机逛淘宝</span>
+        <div class="top-buttom">
+             <span class="top-buttom-cont" style="">手机逛淘宝</span>
         </div>
     <!-- 右 -->
     <div style="float: left;height: 100%;width: 290px;"></div>
@@ -66,7 +66,8 @@
         </div>
         <div class="select"  >
             <span class="select-cont">
-                    购物车<i class="el-icon-arrow-down select-down"></i>
+                  
+                  <i class="iconfont icon-gouwuche" style="padding-right:3px;"></i>购物车<i class="el-icon-arrow-down select-down"></i>
             </span>
             <div  class="option-message">
                     查看我的购物车
@@ -74,7 +75,8 @@
         </div>
         <div class="select"  >
             <span class="select-cont">
-                    收藏夹<i class="el-icon-arrow-down select-down"></i>
+                   
+                   <i class="iconfont icon-iconfontxingxing" style="padding-right:3px;"></i>收藏夹<i class="el-icon-arrow-down select-down"></i>
             </span>
             <ul  class="option-myinfo">
                 <li v-for="item in collect"  :key='item.id' type="checkbox" 
@@ -82,6 +84,10 @@
                     <div style="display:inline-table;">{{item.value}}</div>
                 </li>
             </ul>
+        </div>
+
+        <div class="top-buttom">
+             <span class="top-buttom-cont" style="">商品分类</span>
         </div>
     </div>
     
@@ -316,7 +322,7 @@ export default {
    text-align:left;
 }
 
-.phone{
+.top-buttom{
     float: left;
     height: 100%;
     width: auto;
@@ -327,7 +333,7 @@ export default {
     border: 1px solid rgb(47, 113, 212);
 
 }
-.phone-cont{
+.top-buttom-cont{
     float: left; 
     height: 100%; 
     font-size: 12px;
@@ -340,7 +346,7 @@ export default {
     /* background-color: #0f00f0; */
 }
 
-.phone-cont:hover{
+.top-buttom-cont:hover{
     color: rgb(255, 60, 0);
 }
 
