@@ -13,8 +13,17 @@
                 </li>
             </ul>
         </div>
-               
-        <div class="select">        
+       
+        <div class="top-buttom">
+            <!-- <span class="top-buttom-cont" style="color: rgb(255, 60, 0);" @click="login()">亲，请登录</span> -->
+            <router-link class="top-buttom-cont" style="color: rgb(255, 60, 0);text-decoration:none;" to="/login">亲，请登录</router-link>
+        </div>
+        <div class="top-buttom">
+            <span class="top-buttom-cont" >免费注册</span>
+        </div>
+
+       
+        <!-- <div class="select">        
                 <span class="select-cont">
                     用户名<i class="el-icon-arrow-down select-down"></i>
                 </span>
@@ -47,7 +56,8 @@
                 <div  class="option-message">
                     查看全部
                 </div>
-        </div>
+        </div> -->
+        
         <div class="top-buttom">
              <span class="top-buttom-cont" style="">手机逛淘宝</span>
         </div>
@@ -89,6 +99,52 @@
         <div class="top-buttom">
              <span class="top-buttom-cont" style="">商品分类</span>
         </div>
+
+<div style="padding: 0 5px;
+    font-style: normal;
+    color: #ddd;    float: left;
+    height: 35px;
+    line-height: 35px;">
+            |
+        </div>
+
+        <div class="select"  >
+            <span class="select-cont">
+               千牛卖家中心<i class="el-icon-arrow-down select-down"></i>
+            </span>
+            <ul  class="option-myinfo">
+                <li v-for="item in sellerCenter"  :key='item.id' type="checkbox" 
+                name="hobby" :value="item.id" class="option-myinfo-item" >
+                    <div style="display:inline-table;">{{item.value}}</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="select"  >
+            <span class="select-cont">
+               联系客服<i class="el-icon-arrow-down select-down"></i>
+            </span>
+            <ul  class="option-myinfo">
+                <li v-for="item in CustomerServices"  :key='item.id' type="checkbox" 
+                name="hobby" :value="item.id" class="option-myinfo-item" >
+                    <div style="display:inline-table;">{{item.value}}</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="select"  >
+            <span class="select-cont">
+              <i class="iconfont icon-daohang" style="padding-right:3px;"></i> 网站导航<i class="el-icon-arrow-down select-down"></i>
+            </span>
+            <ul  class="option-myinfo">
+                <li v-for="item in CustomerServices"  :key='item.id' type="checkbox" 
+                name="hobby" :value="item.id" class="option-myinfo-item" >
+                    <div style="display:inline-table;">{{item.value}}</div>
+                </li>
+            </ul>
+        </div>
+        
+
     </div>
     
 
@@ -124,11 +180,27 @@ export default {
             collect:[
                 {id:1,value:"收藏的宝贝"},
                 {id:2,value:"收藏的店铺"},
+            ],
+            sellerCenter:[
+                {id:1,value:"免费开店"},
+                {id:2,value:"已卖出的宝贝"},
+                {id:3,value:"出售中的宝贝"},
+                {id:4,value:"卖家服务市场"},
+                {id:5,value:"卖家培训中心"},
+                {id:6,value:"体检中心"},
+                {id:7,value:"问商友"},
+            ],
+            CustomerServices:[
+                {id:1,value:"消费者客服"},
+                {id:2,value:"消卖家客服"},
             ]
         }
     },
     methods:{
-
+        login($e){
+            // console.log();
+            this.$router.router.push("/login");
+        }
     }
        
 }
@@ -151,7 +223,7 @@ export default {
     position:relative;
     cursor: default;
 
-    border: 1px solid rgb(47, 113, 212);
+    /* border: 1px solid rgb(47, 113, 212); */
 }
 .select-cont{
     height: 100%;
@@ -284,6 +356,8 @@ export default {
     display: flex;
     justify-content: space-around;
     flex-direction: column;
+
+    float: left;
 }
 .option-myinfo-item:hover{
     background-color: #F5F5F5;
@@ -330,7 +404,7 @@ export default {
     cursor: default;
     padding: 0 6px;
 
-    border: 1px solid rgb(47, 113, 212);
+    /* border: 1px solid rgb(47, 113, 212); */
 
 }
 .top-buttom-cont{
