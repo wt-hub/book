@@ -11,14 +11,14 @@
                 <form>
                     <div class="login-imput">
                     <label class="login-imput-label"  for="username" ><i class="iconfont icon-yonghu"></i></label>
-                    <input type="text" id="username" placeholder="会员名/邮箱/手机号" class="login-text "/>
+                    <input type="text" id="username" placeholder="会员名/邮箱/手机号" class="login-text " v-model="form.username"/>
                     </div>
                     <div class="login-imput">
                     <label class="login-imput-label"  for="password" ><i class="iconfont icon-mima"></i></label>
-                    <input type="password" id="password" placeholder="" class="login-text "/>
+                    <input type="password" id="password" placeholder="" class="login-text " v-model="form.password"/>
                     </div>
                     <div class="submit">
-                        <button type="submit" >登录</button>
+                        <button type="submit" @click="submit()">登录</button>
                     </div>
                 </form>
                 <div style="margin-top: 24px;line-height: 14px;">
@@ -52,13 +52,54 @@
 
 export default {
   name: 'Login',
-  data(){
+ data(){
       return{
         form:{
-            name:""
+            username:"",
+            password:""
         }
       }
       
+  },
+  methods:{
+      submit(){
+        let vipName =null;
+        let email =null;
+        let phone =null;
+
+        let phoneReg = /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        let emailReg = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
+        if(phoneReg.test(this.form.username)){
+            //手机号登陆
+            phone = this.form.username;
+        }else if(emailReg.test(this.form.username)){
+            //邮箱登陆
+            email = this.form.username;
+        }else{
+            //会员名登陆
+            vipName = this.form.username;
+        }
+
+        let formData = {vipName:vipName,email:email,phone:phone,password:this.form.password}
+        formData = JSON.stringify(formData);
+        // console.log(formData);
+        this.$axios.post('/login' ,formData)
+        .then( (response) => {
+            console.log(response);
+            if(response.data.Status==100){
+                console.log(response.data.token);
+                this.$cookieUtils.setCookie('token',response.data.token);
+            }else{
+                alert("账户与密码不匹配");
+                console.log(response.data.token);
+            }
+           
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+      }
   }
   
 }
