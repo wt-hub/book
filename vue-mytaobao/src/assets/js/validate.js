@@ -2,25 +2,36 @@ import Vue from 'vue'
 import VeeValidate,{ Validator } from 'vee-validate'
 import zh_CN from 'vee-validate/dist/locale/zh_CN'
 
-Vue.use(VeeValidate);
+// 配置中文
+Validator.addLocale(zh_CN);
+
+const config = {
+    locale: 'zh_CN',
+  };
+
+Vue.use(VeeValidate,config);
+
+// 自定义validate 
+const dictionary = {
+    zh_CN: {
+       messages: {
+        username: () => '请填写账户名1111',
+        password: () => '请输入密码2222',
+        required: ( field )=> "请输入" + field
+       },
+       attributes:{
+         username:'账户名',
+         password:'密码'
+       }
+   }
+ };
+ 
+ Validator.updateDictionary(dictionary);
 
 
-//提示语汉化
-Validator.locale ==="en" ? "zh_CN" : "en";
-Validator.localize(Validator.locale,{
-    messages: zh_CN.messages,
-    attributes:{
-        username:'登录名',
-        loginPassword:'密码'
-    }
-});
+// const validator = new Validator({
+//     email: 'required|email',
+//     name: 'required|alpha|min:3',
+// });
 
-
-Validator.extend('phone', {
-    getMessage: (field, [args]) => `请输入正确的手机号码`,
-    validate: (value, [args]) =>{
-        const reg = /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        return reg.test(value) 
-    }  
-});
 

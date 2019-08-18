@@ -22,7 +22,7 @@ Vue.prototype.$cookieUtils = {setCookie,getCookie,delCookie};
 Vue.config.productionTip = false;
 
 //验证
-// import '@/assets/js/validate'
+import '@/assets/js/validate'
 
 /* eslint-disable no-new */
 new Vue({

@@ -7,18 +7,25 @@
    <div class="login-bg">
     <div class="login-warp">
         <div class="login-box">
-            <div class="login-title">密码登录</div>
+            <div class="login-title" v-show="!error.tag">密码登录</div>
+            <div class="login-msg" v-show="error.tag">
+                <i class="iconfont icon-unie044 " style="padding-right: 10px;float: left;font-size: 16px; color: #f40;"></i>
+                <p style="font-size: 12px;color: #3c3c3c; padding:0; margin:0;">
+                   {{ error.msg}}
+                </p>
+            </div>
                 <form>
                     <div class="login-imput">
                     <label class="login-imput-label"  for="username" ><i class="iconfont icon-yonghu"></i></label>
-                    <input type="text" id="username" placeholder="会员名/邮箱/手机号" class="login-text " v-model="form.username"/>
+                    <input type="text" name="username" placeholder="会员名/邮箱/手机号" v-validate.initial="'required'" class="login-text " v-model.trim="form.username"/>
                     </div>
+                   
                     <div class="login-imput">
                     <label class="login-imput-label"  for="password" ><i class="iconfont icon-mima"></i></label>
-                    <input type="password" id="password" placeholder="" class="login-text " v-model="form.password"/>
+                    <input type="password" name="password" placeholder="" v-validate.initial="'required'" class="login-text " v-model.trim="form.password"/>
                     </div>
                     <div class="submit">
-                        <button type="submit" @click="submit()">登录</button>
+                        <button type="button" @click="submit()">登录</button>
                     </div>
                 </form>
                 <div style="margin-top: 24px;line-height: 14px;">
@@ -49,11 +56,15 @@
 
 <script>
 
-
+import store from '../vuex/store.js';
 export default {
   name: 'Login',
- data(){
+  data(){
       return{
+        error:{
+            tag:false,
+            msg:''
+        },
         form:{
             username:"",
             password:""
@@ -61,6 +72,7 @@ export default {
       }
       
   },
+  store,
   methods:{
       submit(){
         let vipName =null;
@@ -79,28 +91,59 @@ export default {
             //会员名登陆
             vipName = this.form.username;
         }
-
-        let formData = {vipName:vipName,email:email,phone:phone,password:this.form.password}
-        formData = JSON.stringify(formData);
-        // console.log(formData);
-        this.$axios.post('/login' ,formData)
-        .then( (response) => {
-            console.log(response);
-            if(response.data.Status==100){
-                console.log(response.data.token);
-                this.$cookieUtils.setCookie('token',response.data.token);
-            }else{
-                alert("账户与密码不匹配");
-                console.log(response.data.token);
+// debugger;
+        //非空校验  
+        if(this.isEmpty(vipName)&&this.isEmpty(email)&&this.isEmpty(phone)){
+            this.error.tag = true;
+            this.error.msg = "请填写账户名";
+            return;
+            if(this.isEmpty(this.form.password)){
+            this.error.tag = true;
+            this.error.msg = "请输入账户名和密码";
+            return;
             }
-           
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+       
+        }else if(this.isEmpty(this.form.password)){
+            this.error.tag = true;
+            this.error.msg = "请输入密码";
+            return;
+        }
+            //发送
+            let formData = {vipName:vipName,email:email,phone:phone,password:this.form.password}
+            formData = JSON.stringify(formData);
+            // console.log(formData);
+            this.$axios.post('/login' ,formData)
+            .then( (response) => {
+                console.log(response);
+                if(response.data.code==100){
+                    console.log(response.data.token);
+                    // debugger;
+                    this.$store.commit('$_setTokenToStorage',response.data.token);
+                    this.$store.commit('$_setUserToStorage',response.data.user);
+                    this.$router.push( '/');
 
-      }
-  }
+                }else{
+                    alert("账户与密码不匹配");
+                    console.log(response.data.token);
+                }
+            
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        
+
+      },
+    isEmpty(obj){
+        if(typeof obj == "undefined" || obj == null || obj == ""){
+            return true;
+        }else{
+            return false;
+        }
+    },
+  },
+   
+
   
 }
 </script>
@@ -157,6 +200,19 @@ export default {
     padding-bottom: 8px;
     font-weight: 700;
 }
+
+.login-msg{
+    line-height: 16px;
+    padding: 6px 10px;
+    overflow: hidden;
+    width: 278px;
+    background: #fef2f2;
+    border: 1px solid;
+    border-color: #ffb4a8;
+    background-color: #fef2f2;
+    color: #6C6C6C;
+}
+
 .login-imput{
     margin-top:20px;
     position: relative;
